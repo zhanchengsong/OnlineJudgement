@@ -1,38 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import {Problem} from '../../models/problem';
+import {Component, Inject, OnInit} from '@angular/core';
+import {Problem} from '../../models/problem.model';
 
-const PROBLEM: Problem[] = [
-  {
-    id: 1,
-    name: 'Two Sums',
-    desc: 'Given an array of integers, find two numbers such that they add up to a specific given targer number',
-    difficulty: 'Easy'
-  },
-  {
-    id: 2,
-    name: '3 Sums',
-    desc: 'Given an array of integers, find three numbers such that they add up to a specific given targer number',
-    difficulty: 'Easy'
-  }];
 
 @Component({
   selector: 'app-problem-list',
-  template: `
-    <div class="container">
-        <div class="list-group">
-           <a class="list-group-item">
-
-            </a>
-         </div>
-    </div>
-  `,
-  styles: []
+  templateUrl: './problem-list.component.html',
+  styleUrls: ['./problem-list.component.css']
 })
 export class ProblemListComponent implements OnInit {
   problem: Problem[];
-  constructor() { }
+  constructor(@Inject("data") private data) { }
   ngOnInit() {
-    this.problem = PROBLEM;
+    this.problem = this.data.getProblems();
   }
 
 }
