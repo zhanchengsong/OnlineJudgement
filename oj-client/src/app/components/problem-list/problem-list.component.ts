@@ -8,10 +8,10 @@ import {Problem} from '../../models/problem.model';
   styleUrls: ['./problem-list.component.css']
 })
 export class ProblemListComponent implements OnInit {
-  problem: Problem[];
+  problems: Problem[];
   constructor(@Inject("data") private data) { }
   ngOnInit() {
-    this.problem = this.data.getProblems();
+    this.problems = this.data.getProblems();
   }
 
 }
