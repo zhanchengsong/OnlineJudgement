@@ -24,7 +24,7 @@ export class NewProblemComponent implements OnInit {
 
   }
   addProblem() : void{
-    this.data.addProblem(this.newProblem)
+    this.data.addProblem(this.newProblem).catch(error => alert(error.body));
     this.newProblem = Object.assign({},DEFAULT_PROBELM)
   }
 
