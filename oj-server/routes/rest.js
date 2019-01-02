@@ -10,7 +10,7 @@ router.get("/problems", function(req,res){
         .then(problems => res.json(problems));
 });
 
-router.get("/problem/:id", function(req,res){
+router.get("/problems/:id", function(req,res){
     var id = req.params.id;
     problemService.getProblem(+id)
         .then(problem => res.json(problem))
