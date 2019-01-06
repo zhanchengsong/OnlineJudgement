@@ -27,4 +27,7 @@ export class ProfileComponent implements OnInit {
     this.email = this.profile.email;
   }
 
+  resetPassword() {
+    this.auth.resetPassword();
+  }
 }

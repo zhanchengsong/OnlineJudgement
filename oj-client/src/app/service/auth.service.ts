@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import * as auth0 from 'auth0-js';
 declare var Auth0Lock: any;
 import {Observable, Observer} from "rxjs";
-import {Http} from "@angular/http";
+import {Headers, Http, RequestOptions} from "@angular/http";
 import {tokenNotExpired} from "angular2-jwt";
 import {User} from "auth0";
 
@@ -108,6 +108,30 @@ export class AuthService {
           return profile;
         });
       }
+  }
+
+  public resetPassword() {
+    let profile = this.getProfile();
+    let url : string = `https://onlinecodingjudge.auth0.com/dbconnections/change_password`;
+    let headers = new Headers({'content-type': 'application/json'});
+    let body = {
+      client_id: "WmcMlWdwZz2ClNWyMH8VCo1AQCK6aPQo",
+      email: profile.email,
+      connection: 'Username-Password-Authentication'
+    }
+    const options = new RequestOptions ({headers: headers})
+    this.http.post(url, body, options)
+      .toPromise()
+      .then( res => {
+        console.log(res);
+        alert("An email was just sent to reset your password");
+      })
+      .catch(this.handleError);
+  }
+
+  private handleError(error : any) : Promise<any> {
+    console.error('An error occurred', error);
+    return Promise.reject(error.message || error);
   }
 
   // auth0 = new auth0.WebAuth({

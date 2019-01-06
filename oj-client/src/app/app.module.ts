@@ -13,6 +13,8 @@ import { NavbarComponent } from './components/navbar/navbar.component'
 import {AuthService} from "./service/auth.service";
 import { CallbackComponent } from './components/callback/callback.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { EditorComponent } from './components/editor/editor.component';
+import {CollaborationService} from "./service/collaboration.service";
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     NewProblemComponent,
     NavbarComponent,
     CallbackComponent,
-    ProfileComponent
+    ProfileComponent,
+    EditorComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +41,12 @@ import { ProfileComponent } from './components/profile/profile.component';
     {
       provide: "auth",
       useClass: AuthService
-    }],
+    },
+    {
+      provide:"collaboration",
+      useClass: CollaborationService
+    }
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
