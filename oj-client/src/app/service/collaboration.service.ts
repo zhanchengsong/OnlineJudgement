@@ -14,10 +14,10 @@ export class CollaborationService {
       console.log("received: " + message);
     })
     this.collaborationSocket.on("change", (delta:string) => {
-      console.log("Editor Change: " + delta);
+      console.log("Editor Change received: " + delta);
       delta = JSON.parse(delta);
       editor.lastAppliedChange = delta;
-      editor.getSession().getDoucment().applyDelta([delta]);
+      editor.getSession().getDocument().applyDeltas([delta]);
     })
   }
 

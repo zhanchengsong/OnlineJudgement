@@ -43,13 +43,11 @@ export class EditorComponent implements OnInit {
                                         private route: ActivatedRoute) {
 
   }
-
-
-
   ngOnInit() {
 
     this.route.params.subscribe(params => {
       this.sessionId = params['id'];
+      console.log(this.sessionId);
     })
 
     this.initEditor();
@@ -76,7 +74,7 @@ export class EditorComponent implements OnInit {
     this.resetEditor();
     document.getElementsByTagName('textarea')[0].focus();
 
-    this.collabration.init();
+    this.collabration.init(this.editor, this.sessionId);
     this.editor.lastAppliedChange = null;
 
     this.editor.on('change',e => {
