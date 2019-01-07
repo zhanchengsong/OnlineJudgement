@@ -22,6 +22,7 @@ module.exports = function(io) {
         }
 
     }
+    //
 
 
     io.on('connection', (socket) => {
@@ -31,6 +32,12 @@ module.exports = function(io) {
         console.log("SocketId " + socket.id + " connected from sessionId " + sessionId);
         if (sessionId in collaboration) {
             collaboration[sessionId]['participants'].push(socket.id);
+            let changeEvents = collaboration[sessionId]['cachedChangeEvents'];
+            for (let i=0; i < changeEvents.length; i++) {
+                socket.emit(changeEvents[i][0], changeEvents[i][1]);
+            }
+
+
         }
         else {
             collaboration[sessionId] = {
@@ -41,7 +48,12 @@ module.exports = function(io) {
         io.to(socket.id).emit('message', 'Connected on server');
 
         socket.on('change', delta => {
-            console.log("change from" + socket.id + " " + delta);
+            //console.log("change from" + socket.id + " " + delta);
+            let sessionId = socketIdtoSessionId[socket.id];
+            //Server cache for new join in to fastforward
+            if (sessionId in collaboration) {
+                collaboration[sessionId]['cachedChangeEvents'].push(["change", delta, Date.now()]);
+            }
             forwardEvents(socket.id, "change", delta);
         });
 
