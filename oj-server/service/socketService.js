@@ -56,6 +56,20 @@ module.exports = function(io) {
             }
             forwardEvents(socket.id, "change", delta);
         });
+        socket.on('disconnect', function(){
+            console.log("Disconnecting from " + socket.id);
+            let sessionId = socketIdtoSessionId[socket.id];
+            if (sessionId in collaboration) {
+                let participants = collaboration[sessionId].participants;
+                let index = participants.indexOf(participants);
+                if (index >= 0) {
+                    participants.splice(index, 1);
+                }
+            }
+
+
+        });
+
 
     })
 

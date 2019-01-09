@@ -15,7 +15,7 @@ export class EditorComponent implements OnInit {
   sessionId:string;
 
   defaultContent = {
-    'Java': `public class Example {
+    'Java': `public class Solution {
     public static void main(String[] args) {
         //Type your code here
       }
@@ -40,6 +40,7 @@ export class EditorComponent implements OnInit {
 
 
   constructor(@Inject('collaboration') private collabration,
+                                        @Inject('data') private data,
                                         private route: ActivatedRoute) {
 
   }
@@ -87,12 +88,19 @@ export class EditorComponent implements OnInit {
 
   resetEditor(): void {
     this.editor.getSession().setMode('ace/mode/' + this.languageBundleName[this.language]);
+
     this.editor.setValue(this.defaultContent[this.language]);
-    this.output = '';
+    this.output = 'Code to be run';
   }
 
   submit(): void {
     let userCode = this.editor.getValue();
-    console.log(userCode);
+    let data = {
+      user_code: userCode,
+      lang: this.language.toLowerCase()
+    }
+    console.log("Submitting code: " + data);
+    this.data.buildAndRun(data).then(res => this.output = res.text);
+
   }
 }

@@ -19,10 +19,18 @@ export class CollaborationService {
       editor.lastAppliedChange = delta;
       editor.getSession().getDocument().applyDeltas([delta]);
     })
+    this.collaborationSocket.on("cursorMove", (cursor:string) => {
+      console.log("Editor Cursor Move :" + cursor);
+      cursor = JSON.parse(cursor);
+
+    })
   }
 
   change(delta:string) {
     this.collaborationSocket.emit("change",delta);
 
+  }
+  cursorMove(cursor:string) {
+    this.collaborationSocket.emit("cursorMove",cursor);
   }
 }

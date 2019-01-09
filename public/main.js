@@ -353,7 +353,7 @@ module.exports = "@media screen {\n  #editor {\n    height: 600px;\n    width: 8
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<section>\n  <header class=\"editor-header\">\n    <select class=\"form-control pull-left lang-select\" id=\"language\" name=\"language\" [(ngModel)]=\"language\" (change)=\"setLanguage(language)\">\n      <option *ngFor=\"let language of languages\" [value]=\"language\">\n        {{language}}\n      </option>\n    </select>\n\n    <!-- reset button -->\n    <!-- Button trigger modal -->\n    <button type=\"button\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\">\n      <span class=\"octicon octicon-clippy\">Reset</span>\n    </button>\n\n    <!-- Modal -->\n    <div class=\"modal fade\" id=\"myModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n      <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n          <div class=\"modal-header\">\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n              <span aria-hidden=\"true\">&times;</span>\n            </button>\n            <!--<h4 class=\"modal-title\" id=\"myModalLabel\">Reset</h4>-->\n          </div>\n          <div class=\"modal-body\">\n            You will lose current code in the window, are you sure?\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-success\" data-dismiss=\"modal\" (click)=\"resetEditor()\">Reset</button>\n            <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Cancel</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  </header>\n\n  <div class=\"row \" id=\"editor-wrapper\">\n    <div id=\"editor\"></div>\n  </div>\n\n  <div>\n    {{output}}\n  </div>\n\n  <footer class=\"editor-footer\">\n    <button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"submit()\">Submit Solution</button>\n  </footer>\n</section>\n"
+module.exports = "<div class=\"container\">\n<section>\n  <header class=\"editor-header\">\n    <select class=\"form-control pull-left lang-select\" id=\"language\" name=\"language\" [(ngModel)]=\"language\" (change)=\"setLanguage(language)\">\n      <option *ngFor=\"let language of languages\" [value]=\"language\">\n        {{language}}\n      </option>\n    </select>\n\n    <!-- reset button -->\n    <!-- Button trigger modal -->\n    <button type=\"button\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModal\">\n      <span class=\"octicon octicon-clippy\">Reset</span>\n    </button>\n\n    <!-- Modal -->\n    <div class=\"modal fade\" id=\"myModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n      <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n          <div class=\"modal-header\">\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n              <span aria-hidden=\"true\">&times;</span>\n            </button>\n            <!--<h4 class=\"modal-title\" id=\"myModalLabel\">Reset</h4>-->\n          </div>\n          <div class=\"modal-body\">\n            You will lose current code in the window, are you sure?\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-success\" data-dismiss=\"modal\" (click)=\"resetEditor()\">Reset</button>\n            <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Cancel</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  </header>\n\n  <div class=\"row \" id=\"editor-wrapper\">\n    <div id=\"editor\"></div>\n  </div>\n\n  <div>\n    {{output}}\n  </div>\n\n  <footer class=\"editor-footer\">\n    <button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"submit()\">Submit Solution</button>\n  </footer>\n</section>\n</div>\n"
 
 /***/ }),
 
@@ -384,14 +384,15 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
 
 
 var EditorComponent = /** @class */ (function () {
-    function EditorComponent(collabration, route) {
+    function EditorComponent(collabration, data, route) {
         this.collabration = collabration;
+        this.data = data;
         this.route = route;
         this.languages = ['Java', 'C++', 'Python'];
         this.language = 'Java';
         this.output = '';
         this.defaultContent = {
-            'Java': "public class Example {\n    public static void main(String[] args) {\n        //Type your code here\n      }\n    }",
+            'Java': "public class Solution {\n    public static void main(String[] args) {\n        //Type your code here\n      }\n    }",
             'C++': "#include <iostream>\n     using namespace std;\n\n    int main() {\n      //Type your C++ code here\n      return 0;\n    }",
             'Python': "class Solution:\n     def example():\n    # Write your Python code here"
         };
@@ -437,11 +438,17 @@ var EditorComponent = /** @class */ (function () {
     EditorComponent.prototype.resetEditor = function () {
         this.editor.getSession().setMode('ace/mode/' + this.languageBundleName[this.language]);
         this.editor.setValue(this.defaultContent[this.language]);
-        this.output = '';
+        this.output = 'Code to be run';
     };
     EditorComponent.prototype.submit = function () {
+        var _this = this;
         var userCode = this.editor.getValue();
-        console.log(userCode);
+        var data = {
+            user_code: userCode,
+            lang: this.language.toLowerCase()
+        };
+        console.log("Submitting code: " + data);
+        this.data.buildAndRun(data).then(function (res) { return _this.output = res.text; });
     };
     EditorComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -450,7 +457,8 @@ var EditorComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./editor.component.css */ "./src/app/components/editor/editor.component.css")]
         }),
         __param(0, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])('collaboration')),
-        __metadata("design:paramtypes", [Object, _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]])
+        __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])('data')),
+        __metadata("design:paramtypes", [Object, Object, _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"]])
     ], EditorComponent);
     return EditorComponent;
 }());
@@ -652,7 +660,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div classs=\"container\" *ngIf=\"problem\">\n  <div class=\"col-xs-12 col-d-4\">\n    <div>\n      <h2>\n        {{problem.id}}.{{problem.name}}\n      </h2>\n      <p>\n        {{problem.desc}}\n      </p>\n    </div>\n  </div>\n  <div class=\"hidden-xs col-sm-12 col-mid-8\">\n     <app-editor></app-editor>\n  </div>\n</div>\n"
+module.exports = "<div class=\"container\" *ngIf=\"problem\">\n  <div id=\"problem-detail\">\n    <div>\n      <h2>\n        {{problem.id}} . {{problem.name}}\n      </h2>\n      <p>\n        {{problem.desc}}\n      </p>\n    </div>\n  </div>\n  <div class=\"hidden-xs col-sm-12 col-mid-8\">\n     <app-editor></app-editor>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1045,9 +1053,16 @@ var CollaborationService = /** @class */ (function () {
             editor.lastAppliedChange = delta;
             editor.getSession().getDocument().applyDeltas([delta]);
         });
+        this.collaborationSocket.on("cursorMove", function (cursor) {
+            console.log("Editor Cursor Move :" + cursor);
+            cursor = JSON.parse(cursor);
+        });
     };
     CollaborationService.prototype.change = function (delta) {
         this.collaborationSocket.emit("change", delta);
+    };
+    CollaborationService.prototype.cursorMove = function (cursor) {
+        this.collaborationSocket.emit("cursorMove", cursor);
     };
     CollaborationService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
@@ -1122,6 +1137,18 @@ var DataService = /** @class */ (function () {
             _this.getProblems(); //refresh the previous observable
             return res.json();
         }).catch(this.handleError);
+    };
+    DataService.prototype.buildAndRun = function (data) {
+        console.log("Service called in Angular");
+        var headers = new _angular_http__WEBPACK_IMPORTED_MODULE_1__["Headers"]({ 'content-type': 'application/json' });
+        var options = new _angular_http__WEBPACK_IMPORTED_MODULE_1__["RequestOptions"]({ headers: headers });
+        return this.http.post('/api/v1/build_and_run', data, options)
+            .toPromise()
+            .then(function (res) {
+            console.log(res);
+            return res.json();
+        })
+            .catch(this.handleError);
     };
     DataService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
