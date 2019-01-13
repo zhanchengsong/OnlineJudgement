@@ -11,11 +11,27 @@ import {Subscription} from "rxjs";
 export class ProblemListComponent implements OnInit {
   problems: Problem[];
   subscriptionProblems: Subscription;
-  constructor(@Inject("data") private data) { }
+  subscriptionInput: Subscription;
+  searchTerm : string = '';
+
+
+  constructor(@Inject("data") private data,
+              @Inject("input") private input) {
+
+  }
+
+
 
   ngOnInit() {
-    this.subscriptionProblems = this.data.getProblems().subscribe(problems => this.problems = problems);
+    this.getProblems();
+    this.getSearchTerm();
+  }
 
+  getProblems() {
+      this.subscriptionProblems = this.data.getProblems().subscribe(problems => this.problems = problems);
+  }
+  getSearchTerm() {
+    this.subscriptionInput = this.input.getInput().subscribe(term => this.searchTerm = term);
   }
 
 }
