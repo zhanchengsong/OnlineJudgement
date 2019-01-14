@@ -17,6 +17,7 @@ import { EditorComponent } from './components/editor/editor.component';
 import {CollaborationService} from "./service/collaboration.service";
 import { SearchPipe } from './pipes/search.pipe';
 import {InputService} from "./service/input.service";
+import {AuthGuardService} from "./service/auth-guard.service";
 
 @NgModule({
   declarations: [
@@ -53,6 +54,10 @@ import {InputService} from "./service/input.service";
     {
       provide:"input",
       useClass: InputService
+    },
+    {
+      provide: "auth-guard",
+      useClass: AuthGuardService
     }
     ],
   bootstrap: [AppComponent]

@@ -15,7 +15,8 @@ const DEFAULT_PROBELM : Problem = Object.freeze({
 })
 export class NewProblemComponent implements OnInit {
 
-  constructor(@Inject ("data") private data) { }
+  constructor(@Inject ("data") private data,
+              @Inject ("auth-guard") private authGuard) { }
   public difficulties = ["Easy", "Medium","Hard","Super"];
 
   newProblem: Problem = Object.assign({}, DEFAULT_PROBELM)

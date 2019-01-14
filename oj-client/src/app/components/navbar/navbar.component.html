@@ -20,13 +20,13 @@
       <ul class="navbar-nav ml-auto">
 
         <li>
-        <button type="button" class="btn btn-primary" *ngIf="!auth.isAuthenticated()" (click) = "login()">Sign In</button>
+        <button type="button" class="btn btn-primary" *ngIf="!auth.loggedIn" (click) = "login()">Sign In</button>
         </li>
 
-        <li class="nav-item dropdown" *ngIf="auth.isAuthenticated()">
+        <li class="nav-item dropdown" *ngIf="auth.loggedIn && auth.userProfile">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img class= "navbar-icon" src={{avator}}>
-            {{username}}
+            <img class= "navbar-icon" src= {{auth.userProfile.picture}}>
+            {{auth.userProfile.nickname}}
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" [routerLink]="['/profile']">My Profile</a>

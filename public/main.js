@@ -67,7 +67,7 @@ var AppRoutingModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiIuLi9hcHAuY29tcG9uZW50LmNzcyJ9 */"
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FwcC5jb21wb25lbnQuY3NzIn0= */"
 
 /***/ }),
 
@@ -158,12 +158,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _service_collaboration_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./service/collaboration.service */ "./src/app/service/collaboration.service.ts");
 /* harmony import */ var _pipes_search_pipe__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./pipes/search.pipe */ "./src/app/pipes/search.pipe.ts");
 /* harmony import */ var _service_input_service__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./service/input.service */ "./src/app/service/input.service.ts");
+/* harmony import */ var _service_auth_guard_service__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./service/auth-guard.service */ "./src/app/service/auth-guard.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -222,6 +224,10 @@ var AppModule = /** @class */ (function () {
                 {
                     provide: "input",
                     useClass: _service_input_service__WEBPACK_IMPORTED_MODULE_18__["InputService"]
+                },
+                {
+                    provide: "auth-guard",
+                    useClass: _service_auth_guard_service__WEBPACK_IMPORTED_MODULE_19__["AuthGuardService"]
                 }
             ],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]]
@@ -249,6 +255,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_problem_detail_problem_detail_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/problem-detail/problem-detail.component */ "./src/app/components/problem-detail/problem-detail.component.ts");
 /* harmony import */ var _components_callback_callback_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/callback/callback.component */ "./src/app/components/callback/callback.component.ts");
 /* harmony import */ var _components_profile_profile_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/profile/profile.component */ "./src/app/components/profile/profile.component.ts");
+/* harmony import */ var _service_auth_guard_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./service/auth-guard.service */ "./src/app/service/auth-guard.service.ts");
+
 
 
 
@@ -274,7 +282,8 @@ var appRoutes = [
     },
     {
         path: 'profile',
-        component: _components_profile_profile_component__WEBPACK_IMPORTED_MODULE_4__["ProfileComponent"]
+        component: _components_profile_profile_component__WEBPACK_IMPORTED_MODULE_4__["ProfileComponent"],
+        canActivate: [_service_auth_guard_service__WEBPACK_IMPORTED_MODULE_5__["AuthGuardService"]]
     },
     {
         path: "**",
@@ -286,6 +295,31 @@ var routing = _angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"].forRo
 
 /***/ }),
 
+/***/ "./src/app/auth/auth.config.ts":
+/*!*************************************!*\
+  !*** ./src/app/auth/auth.config.ts ***!
+  \*************************************/
+/*! exports provided: AUTH_CONFIG */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AUTH_CONFIG", function() { return AUTH_CONFIG; });
+/* harmony import */ var _core_env_config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../core/env.config */ "./src/app/core/env.config.ts");
+
+;
+var AUTH_CONFIG = {
+    CLIENT_ID: 'WmcMlWdwZz2ClNWyMH8VCo1AQCK6aPQo',
+    CLIENT_DOMAIN: 'onlinecodingjudge.auth0.com',
+    AUDIENCE: '',
+    REDIRECT: _core_env_config__WEBPACK_IMPORTED_MODULE_0__["ENV"].BASE_URI + "/callback",
+    SCOPE: 'openid profile email',
+    NAMESPACE: 'http://newgrad-developer.com/roles'
+};
+
+
+/***/ }),
+
 /***/ "./src/app/components/callback/callback.component.css":
 /*!************************************************************!*\
   !*** ./src/app/components/callback/callback.component.css ***!
@@ -293,7 +327,7 @@ var routing = _angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"].forRo
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiIuLi9jb21wb25lbnRzL2NhbGxiYWNrL2NhbGxiYWNrLmNvbXBvbmVudC5jc3MifQ== */"
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvY2FsbGJhY2svY2FsbGJhY2suY29tcG9uZW50LmNzcyJ9 */"
 
 /***/ }),
 
@@ -304,7 +338,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  Loading from Authentication\n  Please Wait\n</p>\n"
+module.exports = "<div>\n  Loading...\n</div>\n"
 
 /***/ }),
 
@@ -325,9 +359,18 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 
 var CallbackComponent = /** @class */ (function () {
-    function CallbackComponent() {
+    function CallbackComponent(auth) {
+        this.auth = auth;
+        // Check for authentication and handle if hash present
+        auth.handleAuth();
     }
     CallbackComponent.prototype.ngOnInit = function () {
     };
@@ -336,7 +379,9 @@ var CallbackComponent = /** @class */ (function () {
             selector: 'app-callback',
             template: __webpack_require__(/*! ./callback.component.html */ "./src/app/components/callback/callback.component.html"),
             styles: [__webpack_require__(/*! ./callback.component.css */ "./src/app/components/callback/callback.component.css")]
-        })
+        }),
+        __param(0, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])("auth")),
+        __metadata("design:paramtypes", [Object])
     ], CallbackComponent);
     return CallbackComponent;
 }());
@@ -352,7 +397,7 @@ var CallbackComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "@media screen {\n  #editor {\n    height: 600px;\n    width: 800px;\n  }\n  .lang-select {\n    width: 100px;\n    margin-right: 10px;\n  }\n  header .btn {\n    margin: 0 5px;\n  }\n  footer .btn {\n    margin: 0 5px;\n  }\n  .editor-footer, .editor-header {\n    margin: 10px 0;\n  }\n  .cursor {\n    /*position:absolute;*/\n    background: rgba(0, 250, 0, 0.5);\n    z-index: 40;\n    width: 2px!important\n  }\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL2NvbXBvbmVudHMvZWRpdG9yL2VkaXRvci5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0U7SUFDRSxjQUFjO0lBQ2QsYUFBYTtHQUNkO0VBQ0Q7SUFDRSxhQUFhO0lBQ2IsbUJBQW1CO0dBQ3BCO0VBQ0Q7SUFDRSxjQUFjO0dBQ2Y7RUFDRDtJQUNFLGNBQWM7R0FDZjtFQUNEO0lBQ0UsZUFBZTtHQUNoQjtFQUNEO0lBQ0Usc0JBQXNCO0lBQ3RCLGlDQUFpQztJQUNqQyxZQUFZO0lBQ1osb0JBQW9CO0dBQ3JCO0NBQ0YiLCJmaWxlIjoiLi4vY29tcG9uZW50cy9lZGl0b3IvZWRpdG9yLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJAbWVkaWEgc2NyZWVuIHtcbiAgI2VkaXRvciB7XG4gICAgaGVpZ2h0OiA2MDBweDtcbiAgICB3aWR0aDogODAwcHg7XG4gIH1cbiAgLmxhbmctc2VsZWN0IHtcbiAgICB3aWR0aDogMTAwcHg7XG4gICAgbWFyZ2luLXJpZ2h0OiAxMHB4O1xuICB9XG4gIGhlYWRlciAuYnRuIHtcbiAgICBtYXJnaW46IDAgNXB4O1xuICB9XG4gIGZvb3RlciAuYnRuIHtcbiAgICBtYXJnaW46IDAgNXB4O1xuICB9XG4gIC5lZGl0b3ItZm9vdGVyLCAuZWRpdG9yLWhlYWRlciB7XG4gICAgbWFyZ2luOiAxMHB4IDA7XG4gIH1cbiAgLmN1cnNvciB7XG4gICAgLypwb3NpdGlvbjphYnNvbHV0ZTsqL1xuICAgIGJhY2tncm91bmQ6IHJnYmEoMCwgMjUwLCAwLCAwLjUpO1xuICAgIHotaW5kZXg6IDQwO1xuICAgIHdpZHRoOiAycHghaW1wb3J0YW50XG4gIH1cbn1cbiJdfQ== */"
+module.exports = "@media screen {\n  #editor {\n    height: 600px;\n    width: 800px;\n  }\n  .lang-select {\n    width: 100px;\n    margin-right: 10px;\n  }\n  header .btn {\n    margin: 0 5px;\n  }\n  footer .btn {\n    margin: 0 5px;\n  }\n  .editor-footer, .editor-header {\n    margin: 10px 0;\n  }\n  .cursor {\n    /*position:absolute;*/\n    background: rgba(0, 250, 0, 0.5);\n    z-index: 40;\n    width: 2px!important\n  }\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9lZGl0b3IvZWRpdG9yLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRTtJQUNFLGNBQWM7SUFDZCxhQUFhO0dBQ2Q7RUFDRDtJQUNFLGFBQWE7SUFDYixtQkFBbUI7R0FDcEI7RUFDRDtJQUNFLGNBQWM7R0FDZjtFQUNEO0lBQ0UsY0FBYztHQUNmO0VBQ0Q7SUFDRSxlQUFlO0dBQ2hCO0VBQ0Q7SUFDRSxzQkFBc0I7SUFDdEIsaUNBQWlDO0lBQ2pDLFlBQVk7SUFDWixvQkFBb0I7R0FDckI7Q0FDRiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvZWRpdG9yL2VkaXRvci5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiQG1lZGlhIHNjcmVlbiB7XG4gICNlZGl0b3Ige1xuICAgIGhlaWdodDogNjAwcHg7XG4gICAgd2lkdGg6IDgwMHB4O1xuICB9XG4gIC5sYW5nLXNlbGVjdCB7XG4gICAgd2lkdGg6IDEwMHB4O1xuICAgIG1hcmdpbi1yaWdodDogMTBweDtcbiAgfVxuICBoZWFkZXIgLmJ0biB7XG4gICAgbWFyZ2luOiAwIDVweDtcbiAgfVxuICBmb290ZXIgLmJ0biB7XG4gICAgbWFyZ2luOiAwIDVweDtcbiAgfVxuICAuZWRpdG9yLWZvb3RlciwgLmVkaXRvci1oZWFkZXIge1xuICAgIG1hcmdpbjogMTBweCAwO1xuICB9XG4gIC5jdXJzb3Ige1xuICAgIC8qcG9zaXRpb246YWJzb2x1dGU7Ki9cbiAgICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDI1MCwgMCwgMC41KTtcbiAgICB6LWluZGV4OiA0MDtcbiAgICB3aWR0aDogMnB4IWltcG9ydGFudFxuICB9XG59XG4iXX0= */"
 
 /***/ }),
 
@@ -484,7 +529,7 @@ var EditorComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".navbar-icon {\n  max-height:30px;\n  width:auto;\n  vertical-align:middle;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL2NvbXBvbmVudHMvbmF2YmFyL25hdmJhci5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsZ0JBQWdCO0VBQ2hCLFdBQVc7RUFDWCxzQkFBc0I7Q0FDdkIiLCJmaWxlIjoiLi4vY29tcG9uZW50cy9uYXZiYXIvbmF2YmFyLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIubmF2YmFyLWljb24ge1xuICBtYXgtaGVpZ2h0OjMwcHg7XG4gIHdpZHRoOmF1dG87XG4gIHZlcnRpY2FsLWFsaWduOm1pZGRsZTtcbn1cbiJdfQ== */"
+module.exports = ".navbar-icon {\n  max-height:30px;\n  width:auto;\n  vertical-align:middle;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9uYXZiYXIvbmF2YmFyLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxnQkFBZ0I7RUFDaEIsV0FBVztFQUNYLHNCQUFzQjtDQUN2QiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvbmF2YmFyL25hdmJhci5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm5hdmJhci1pY29uIHtcbiAgbWF4LWhlaWdodDozMHB4O1xuICB3aWR0aDphdXRvO1xuICB2ZXJ0aWNhbC1hbGlnbjptaWRkbGU7XG59XG4iXX0= */"
 
 /***/ }),
 
@@ -495,7 +540,7 @@ module.exports = ".navbar-icon {\n  max-height:30px;\n  width:auto;\n  vertical-
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <nav class=\"navbar navbar-expand-md navbar-light bg-light justify-content-between\">\n\n    <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n\n    <div class=\"navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2\" >\n      <form class=\"form-inline my-2 my-lg-0\" (ngSubmit)=\"searchProblem()\">\n        <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\" [formControl]=\"searchBox\">\n        <button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\">Search</button>\n      </form>\n    </div>\n\n    <div class=\"mx-auto order-0\">\n      <a class=\"navbar-brand mx-auto\" href=\"#\">{{brandName}}</a>\n    </div>\n\n    <div class=\"navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2\">\n      <ul class=\"navbar-nav ml-auto\">\n\n        <li>\n        <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"!auth.isAuthenticated()\" (click) = \"login()\">Sign In</button>\n        </li>\n\n        <li class=\"nav-item dropdown\" *ngIf=\"auth.isAuthenticated()\">\n          <a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdown\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n            <img class= \"navbar-icon\" src={{avator}}>\n            {{username}}\n          </a>\n          <div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdown\">\n              <a class=\"dropdown-item\" [routerLink]=\"['/profile']\">My Profile</a>\n              <a class=\"dropdown-item\" href=\"#\">My Favourite</a>\n              <a class=\"dropdown-item\" href=\"#\">My Submission</a>\n              <div class=\"dropdown-divider\"></div>\n              <a class=\"dropdown-item\" href=\"#\" (click) = \"logout()\" >Logout</a>\n          </div>\n        </li>\n\n      </ul>\n    </div>\n    <!--<ul class=\"nav navbar-nav navbar-right\">-->\n\n        <!--<li>-->\n          <!--<button type=\"button\" class=\"btn btn-primary\">Sign in</button>-->\n        <!--</li>-->\n\n        <!--<li class=\"nav-item dropdown\">-->\n          <!--<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdown\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">-->\n            <!--{{username}}-->\n          <!--</a>-->\n          <!--<div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdown\">-->\n            <!--<a class=\"dropdown-item\" href=\"#\">My Profile</a>-->\n            <!--<a class=\"dropdown-item\" href=\"#\">My Favourite</a>-->\n            <!--<a class=\"dropdown-item\" href=\"#\">My Submission</a>-->\n            <!--<div class=\"dropdown-divider\"></div>-->\n            <!--<a class=\"dropdown-item\" href=\"#\" >Logout</a>-->\n          <!--</div>-->\n        <!--</li>-->\n\n      <!--</ul>-->\n\n    <!--</div>-->\n  </nav>\n</div>\n"
+module.exports = "<div class=\"container\">\n  <nav class=\"navbar navbar-expand-md navbar-light bg-light justify-content-between\">\n\n    <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n\n    <div class=\"navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2\" >\n      <form class=\"form-inline my-2 my-lg-0\" (ngSubmit)=\"searchProblem()\">\n        <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\" [formControl]=\"searchBox\">\n        <button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\">Search</button>\n      </form>\n    </div>\n\n    <div class=\"mx-auto order-0\">\n      <a class=\"navbar-brand mx-auto\" href=\"#\">{{brandName}}</a>\n    </div>\n\n    <div class=\"navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2\">\n      <ul class=\"navbar-nav ml-auto\">\n\n        <li>\n        <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"!auth.loggedIn\" (click) = \"login()\">Sign In</button>\n        </li>\n\n        <li class=\"nav-item dropdown\" *ngIf=\"auth.loggedIn && auth.userProfile\">\n          <a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdown\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n            <img class= \"navbar-icon\" src= {{auth.userProfile.picture}}>\n            {{auth.userProfile.nickname}}\n          </a>\n          <div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdown\">\n              <a class=\"dropdown-item\" [routerLink]=\"['/profile']\">My Profile</a>\n              <a class=\"dropdown-item\" href=\"#\">My Favourite</a>\n              <a class=\"dropdown-item\" href=\"#\">My Submission</a>\n              <div class=\"dropdown-divider\"></div>\n              <a class=\"dropdown-item\" href=\"#\" (click) = \"logout()\" >Logout</a>\n          </div>\n        </li>\n\n      </ul>\n    </div>\n    <!--<ul class=\"nav navbar-nav navbar-right\">-->\n\n        <!--<li>-->\n          <!--<button type=\"button\" class=\"btn btn-primary\">Sign in</button>-->\n        <!--</li>-->\n\n        <!--<li class=\"nav-item dropdown\">-->\n          <!--<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdown\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">-->\n            <!--{{username}}-->\n          <!--</a>-->\n          <!--<div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdown\">-->\n            <!--<a class=\"dropdown-item\" href=\"#\">My Profile</a>-->\n            <!--<a class=\"dropdown-item\" href=\"#\">My Favourite</a>-->\n            <!--<a class=\"dropdown-item\" href=\"#\">My Submission</a>-->\n            <!--<div class=\"dropdown-divider\"></div>-->\n            <!--<a class=\"dropdown-item\" href=\"#\" >Logout</a>-->\n          <!--</div>-->\n        <!--</li>-->\n\n      <!--</ul>-->\n\n    <!--</div>-->\n  </nav>\n</div>\n"
 
 /***/ }),
 
@@ -535,24 +580,10 @@ var NavbarComponent = /** @class */ (function () {
         this.input = input;
         this.router = router;
         this.brandName = "COJ";
-        this.username = "";
         this.searchBox = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"];
     }
     NavbarComponent.prototype.ngOnInit = function () {
         var _this = this;
-        if (this.auth.isAuthenticated()) {
-            if (localStorage.getItem("profile")) {
-                this.username = JSON.parse(localStorage.getItem("profile")).nickname;
-                this.avator = JSON.parse(localStorage.getItem("profile")).picture;
-            }
-        }
-        else {
-            console.log("Loading from observable");
-            this.auth.userProfileChange$.subscribe(function (profile) {
-                _this.username = profile.nickname;
-                _this.avator = profile.picture;
-            });
-        }
         this.subscription = this.searchBox
             .valueChanges
             .subscribe(function (term) {
@@ -563,17 +594,10 @@ var NavbarComponent = /** @class */ (function () {
         this.subscription.unsubscribe();
     };
     NavbarComponent.prototype.login = function () {
-        var _this = this;
-        this.auth.login()
-            .then(function (profile) {
-            console.log(profile);
-            _this.username = profile.nickname;
-        })
-            .catch(function (err) { console.log(err); });
+        this.auth.login();
     };
     NavbarComponent.prototype.logout = function () {
         this.auth.logout();
-        this.username = "";
     };
     NavbarComponent.prototype.searchProblem = function () {
         this.router.navigate(['/problems']);
@@ -602,7 +626,7 @@ var NavbarComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiIuLi9jb21wb25lbnRzL25ldy1wcm9ibGVtL25ldy1wcm9ibGVtLmNvbXBvbmVudC5jc3MifQ== */"
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvbmV3LXByb2JsZW0vbmV3LXByb2JsZW0uY29tcG9uZW50LmNzcyJ9 */"
 
 /***/ }),
 
@@ -613,7 +637,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n  <form #formRef=\"ngForm\">\n    <div class=\"form-group\">\n      <label for=\"problemName\">Problem Name</label>\n      <input type=\"text\" class=\"form-control\" id=\"problemName\" name=\"problemName\" required placeholder=\"Enter Problem Name\"\n             [(ngModel)]=\"newProblem.name\">\n    </div>\n    <div class=\"form-group\">\n      <label for=\"problemDesc\">Problem Description</label>\n      <textarea type=\"text\" row=\"3\" class=\"form-control\" id=\"problemDesc\" name=\"problemDesc\" required placeholder=\"Enter Problem Description\"\n                [(ngModel)]=\"newProblem.desc\"></textarea>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"difficulty\">Difficulty</label>\n      <select class=\"form-control\" id=\"difficulty\" name=\"difficulty\" [(ngModel)]=\"newProblem.difficulty\">\n        <option value=\"\" disabled selected>\n          Select difficulty\n        </option>\n        <option *ngFor=\"let difficulty of difficulties\" [value]=\"difficulty\">\n          {{difficulty}}\n        </option>\n      </select>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <button type=\"submit\" class=\"btn btn-primary pull-right\" (click)=\"addProblem()\">Add Problem</button>\n      </div>\n    </div>\n  </form>\n</div>\n"
+module.exports = "<div *ngIf = \"authGuard.isAdmin()\">\n  <form #formRef=\"ngForm\">\n    <div class=\"form-group\">\n      <label for=\"problemName\">Problem Name</label>\n      <input type=\"text\" class=\"form-control\" id=\"problemName\" name=\"problemName\" required placeholder=\"Enter Problem Name\"\n             [(ngModel)]=\"newProblem.name\">\n    </div>\n    <div class=\"form-group\">\n      <label for=\"problemDesc\">Problem Description</label>\n      <textarea type=\"text\" row=\"3\" class=\"form-control\" id=\"problemDesc\" name=\"problemDesc\" required placeholder=\"Enter Problem Description\"\n                [(ngModel)]=\"newProblem.desc\"></textarea>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"difficulty\">Difficulty</label>\n      <select class=\"form-control\" id=\"difficulty\" name=\"difficulty\" [(ngModel)]=\"newProblem.difficulty\">\n        <option value=\"\" disabled selected>\n          Select difficulty\n        </option>\n        <option *ngFor=\"let difficulty of difficulties\" [value]=\"difficulty\">\n          {{difficulty}}\n        </option>\n      </select>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <button type=\"submit\" class=\"btn btn-primary pull-right\" (click)=\"addProblem()\">Add Problem</button>\n      </div>\n    </div>\n  </form>\n</div>\n"
 
 /***/ }),
 
@@ -648,8 +672,9 @@ var DEFAULT_PROBELM = Object.freeze({
     difficulty: 'Easy'
 });
 var NewProblemComponent = /** @class */ (function () {
-    function NewProblemComponent(data) {
+    function NewProblemComponent(data, authGuard) {
         this.data = data;
+        this.authGuard = authGuard;
         this.difficulties = ["Easy", "Medium", "Hard", "Super"];
         this.newProblem = Object.assign({}, DEFAULT_PROBELM);
     }
@@ -666,7 +691,8 @@ var NewProblemComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./new-problem.component.css */ "./src/app/components/new-problem/new-problem.component.css")]
         }),
         __param(0, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])("data")),
-        __metadata("design:paramtypes", [Object])
+        __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])("auth-guard")),
+        __metadata("design:paramtypes", [Object, Object])
     ], NewProblemComponent);
     return NewProblemComponent;
 }());
@@ -682,7 +708,7 @@ var NewProblemComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiIuLi9jb21wb25lbnRzL3Byb2JsZW0tZGV0YWlsL3Byb2JsZW0tZGV0YWlsLmNvbXBvbmVudC5jc3MifQ== */"
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvcHJvYmxlbS1kZXRhaWwvcHJvYmxlbS1kZXRhaWwuY29tcG9uZW50LmNzcyJ9 */"
 
 /***/ }),
 
@@ -758,7 +784,7 @@ var ProblemDetailComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".difficulty {\n  min-width: 65px;\n  margin-right: 10px;\n}\n\n.label.difficulty {\n  padding-top: 0.6em;\n  color: #fbfdfa;\n  font-size: 12px;\n}\n\n.title {\n  font-size: 1.2em;\n}\n\n.diff-easy {\n  background-color: #42ebf4;\n}\n\n.diff-medium {\n  background-color: #92cf5c;\n}\n\n.diff-hard {\n  background-color: #dd0d1e;\n}\n\n.diff-super {\n  background-color: #8d16e2;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL2NvbXBvbmVudHMvcHJvYmxlbS1saXN0L3Byb2JsZW0tbGlzdC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsZ0JBQWdCO0VBQ2hCLG1CQUFtQjtDQUNwQjs7QUFFRDtFQUNFLG1CQUFtQjtFQUNuQixlQUFlO0VBQ2YsZ0JBQWdCO0NBQ2pCOztBQUVEO0VBQ0UsaUJBQWlCO0NBQ2xCOztBQUVEO0VBQ0UsMEJBQTBCO0NBQzNCOztBQUVEO0VBQ0UsMEJBQTBCO0NBQzNCOztBQUVEO0VBQ0UsMEJBQTBCO0NBQzNCOztBQUVEO0VBQ0UsMEJBQTBCO0NBQzNCIiwiZmlsZSI6Ii4uL2NvbXBvbmVudHMvcHJvYmxlbS1saXN0L3Byb2JsZW0tbGlzdC5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmRpZmZpY3VsdHkge1xuICBtaW4td2lkdGg6IDY1cHg7XG4gIG1hcmdpbi1yaWdodDogMTBweDtcbn1cblxuLmxhYmVsLmRpZmZpY3VsdHkge1xuICBwYWRkaW5nLXRvcDogMC42ZW07XG4gIGNvbG9yOiAjZmJmZGZhO1xuICBmb250LXNpemU6IDEycHg7XG59XG5cbi50aXRsZSB7XG4gIGZvbnQtc2l6ZTogMS4yZW07XG59XG5cbi5kaWZmLWVhc3kge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjNDJlYmY0O1xufVxuXG4uZGlmZi1tZWRpdW0ge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjOTJjZjVjO1xufVxuXG4uZGlmZi1oYXJkIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogI2RkMGQxZTtcbn1cblxuLmRpZmYtc3VwZXIge1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjOGQxNmUyO1xufVxuIl19 */"
+module.exports = ".difficulty {\n  min-width: 65px;\n  margin-right: 10px;\n}\n\n.label.difficulty {\n  padding-top: 0.6em;\n  color: #fbfdfa;\n  font-size: 12px;\n}\n\n.title {\n  font-size: 1.2em;\n}\n\n.diff-easy {\n  background-color: #42ebf4;\n}\n\n.diff-medium {\n  background-color: #92cf5c;\n}\n\n.diff-hard {\n  background-color: #dd0d1e;\n}\n\n.diff-super {\n  background-color: #8d16e2;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9wcm9ibGVtLWxpc3QvcHJvYmxlbS1saXN0LmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxnQkFBZ0I7RUFDaEIsbUJBQW1CO0NBQ3BCOztBQUVEO0VBQ0UsbUJBQW1CO0VBQ25CLGVBQWU7RUFDZixnQkFBZ0I7Q0FDakI7O0FBRUQ7RUFDRSxpQkFBaUI7Q0FDbEI7O0FBRUQ7RUFDRSwwQkFBMEI7Q0FDM0I7O0FBRUQ7RUFDRSwwQkFBMEI7Q0FDM0I7O0FBRUQ7RUFDRSwwQkFBMEI7Q0FDM0I7O0FBRUQ7RUFDRSwwQkFBMEI7Q0FDM0IiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL3Byb2JsZW0tbGlzdC9wcm9ibGVtLWxpc3QuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5kaWZmaWN1bHR5IHtcbiAgbWluLXdpZHRoOiA2NXB4O1xuICBtYXJnaW4tcmlnaHQ6IDEwcHg7XG59XG5cbi5sYWJlbC5kaWZmaWN1bHR5IHtcbiAgcGFkZGluZy10b3A6IDAuNmVtO1xuICBjb2xvcjogI2ZiZmRmYTtcbiAgZm9udC1zaXplOiAxMnB4O1xufVxuXG4udGl0bGUge1xuICBmb250LXNpemU6IDEuMmVtO1xufVxuXG4uZGlmZi1lYXN5IHtcbiAgYmFja2dyb3VuZC1jb2xvcjogIzQyZWJmNDtcbn1cblxuLmRpZmYtbWVkaXVtIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogIzkyY2Y1Yztcbn1cblxuLmRpZmYtaGFyZCB7XG4gIGJhY2tncm91bmQtY29sb3I6ICNkZDBkMWU7XG59XG5cbi5kaWZmLXN1cGVyIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogIzhkMTZlMjtcbn1cbiJdfQ== */"
 
 /***/ }),
 
@@ -839,7 +865,7 @@ var ProblemListComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiIuLi9jb21wb25lbnRzL3Byb2ZpbGUvcHJvZmlsZS5jb21wb25lbnQuY3NzIn0= */"
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvcHJvZmlsZS9wcm9maWxlLmNvbXBvbmVudC5jc3MifQ== */"
 
 /***/ }),
 
@@ -914,6 +940,31 @@ var ProfileComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/core/env.config.ts":
+/*!************************************!*\
+  !*** ./src/app/core/env.config.ts ***!
+  \************************************/
+/*! exports provided: ENV */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ENV", function() { return ENV; });
+var _isDev = window.location.port.indexOf('4200') > -1;
+var getHost = function () {
+    var protocol = window.location.protocol;
+    var host = window.location.host;
+    return protocol + "//" + host;
+};
+var apiURI = _isDev ? 'http://localhost:3000/api/' : "/api/";
+var ENV = {
+    BASE_URI: getHost(),
+    BASE_API: apiURI
+};
+
+
+/***/ }),
+
 /***/ "./src/app/pipes/search.pipe.ts":
 /*!**************************************!*\
   !*** ./src/app/pipes/search.pipe.ts ***!
@@ -951,6 +1002,63 @@ var SearchPipe = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/service/auth-guard.service.ts":
+/*!***********************************************!*\
+  !*** ./src/app/service/auth-guard.service.ts ***!
+  \***********************************************/
+/*! exports provided: AuthGuardService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthGuardService", function() { return AuthGuardService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+var AuthGuardService = /** @class */ (function () {
+    function AuthGuardService(auth, router) {
+        this.auth = auth;
+        this.router = router;
+    }
+    AuthGuardService.prototype.canActivate = function () {
+        if (this.auth.loggedIn) {
+            return true;
+        }
+        else {
+            this.router.navigate(['/problems']);
+            return false;
+        }
+    };
+    AuthGuardService.prototype.isAdmin = function () {
+        return (this.auth.loggedIn && this.auth.userProfile && this.auth.isAdmin);
+    };
+    AuthGuardService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
+            providedIn: 'root'
+        }),
+        __param(0, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])('auth')),
+        __metadata("design:paramtypes", [Object, _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
+    ], AuthGuardService);
+    return AuthGuardService;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/service/auth.service.ts":
 /*!*****************************************!*\
   !*** ./src/app/service/auth.service.ts ***!
@@ -963,10 +1071,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthService", function() { return AuthService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
-/* harmony import */ var _angular_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/http */ "./node_modules/@angular/http/fesm5/http.js");
-/* harmony import */ var angular2_jwt__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! angular2-jwt */ "./node_modules/angular2-jwt/angular2-jwt.js");
-/* harmony import */ var angular2_jwt__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(angular2_jwt__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var auth0_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! auth0-js */ "./node_modules/auth0-js/dist/auth0.min.esm.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _auth_auth_config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../auth/auth.config */ "./src/app/auth/auth.config.ts");
+/* harmony import */ var _core_env_config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../core/env.config */ "./src/app/core/env.config.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -981,120 +1089,377 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var AuthService = /** @class */ (function () {
-    function AuthService(http, router) {
-        var _this = this;
-        this.http = http;
+    function AuthService(router) {
         this.router = router;
-        this.userProfileChange$ = new rxjs__WEBPACK_IMPORTED_MODULE_2__["Observable"](function (obs) { return _this.profile_observer = obs; });
-        this.auth0Options = {
-            theme: {
-                primaryColor: '#DFA612'
-            },
-            auth: {
-                redirectUrl: "http://localhost:3000/problems",
-                responseType: 'token id_token',
-                audience: "https://onlinecodingjudge.auth0.com/userinfo",
-                params: {
-                    scope: 'openid profile email'
-                }
-            },
-            autoclose: true,
-            oidcConformant: true,
-        };
-        this.lock = new Auth0Lock('WmcMlWdwZz2ClNWyMH8VCo1AQCK6aPQo', 'onlinecodingjudge.auth0.com', this.auth0Options);
-        this.lock.on('authenticated', function (authResult) {
-            _this.lock.getUserInfo(authResult.accessToken, function (error, profile) {
-                if (error) {
-                    throw new Error(error);
-                }
-                localStorage.setItem('token', authResult.idToken);
-                localStorage.setItem('profile', JSON.stringify(profile));
-                _this.userProfile = profile;
-                _this.profile_observer.next(profile);
-                _this.router.onSameUrlNavigation = 'reload';
-                _this.router.navigate(['/home']);
-                // this.router.navigate(['/']);
-            });
+        this._auth0 = new auth0_js__WEBPACK_IMPORTED_MODULE_2__["WebAuth"]({
+            clientID: _auth_auth_config__WEBPACK_IMPORTED_MODULE_4__["AUTH_CONFIG"].CLIENT_ID,
+            domain: _auth_auth_config__WEBPACK_IMPORTED_MODULE_4__["AUTH_CONFIG"].CLIENT_DOMAIN,
+            responseType: 'token id_token',
+            redirectUri: _auth_auth_config__WEBPACK_IMPORTED_MODULE_4__["AUTH_CONFIG"].REDIRECT,
+            //audience: AUTH_CONFIG.AUDIENCE,
+            scope: _auth_auth_config__WEBPACK_IMPORTED_MODULE_4__["AUTH_CONFIG"].SCOPE
         });
-        this.lock.on('authorization_error', function (error) {
-            this.lock.show({
-                flashMessage: {
-                    type: 'error',
-                    text: error.errorDescription
-                }
-            });
-        });
+        this.loggedIn$ = new rxjs__WEBPACK_IMPORTED_MODULE_3__["BehaviorSubject"](this.loggedIn);
+        // If app auth token is not expired, request new token
+        if (JSON.parse(localStorage.getItem('expires_at')) > Date.now()) {
+            this.renewToken();
+        }
     }
+    AuthService.prototype.setLoggedIn = function (value) {
+        // Update login status subject
+        this.loggedIn$.next(value);
+        this.loggedIn = value;
+    };
     AuthService.prototype.login = function () {
+        // Auth0 authorize request
+        console.log("redirect " + _auth_auth_config__WEBPACK_IMPORTED_MODULE_4__["AUTH_CONFIG"].REDIRECT);
+        this._auth0.authorize();
+    };
+    AuthService.prototype.handleAuth = function () {
         var _this = this;
-        return new Promise(function (resolve, reject) {
-            // Call the show method to display the widget.
-            _this.lock.show(function (error, profile, id_token) {
-                if (error) {
-                    console.log(error);
-                    reject(error);
-                }
-                else {
-                    localStorage.setItem('profile', JSON.stringify(profile));
-                    localStorage.setItem('id_token', id_token);
-                    console.log(profile);
-                    resolve(profile);
-                }
-            });
+        // When Auth0 hash parsed, get profile
+        this._auth0.parseHash(function (err, authResult) {
+            if (authResult && authResult.accessToken) {
+                window.location.hash = '';
+                _this._getProfile(authResult);
+            }
+            else if (err) {
+                console.error("Error authenticating: " + err.error);
+            }
+            _this.router.navigate(['/']);
         });
+    };
+    AuthService.prototype._getProfile = function (authResult) {
+        var _this = this;
+        this.loggingIn = true;
+        // Use access token to retrieve user's profile and set session
+        this._auth0.client.userInfo(authResult.accessToken, function (err, profile) {
+            if (profile) {
+                _this._setSession(authResult, profile);
+            }
+            else if (err) {
+                console.warn("Error retrieving profile: " + err.error);
+            }
+        });
+    };
+    AuthService.prototype._setSession = function (authResult, profile) {
+        this.expiresAt = (authResult.expiresIn * 1000) + Date.now();
+        // Store expiration in local storage to access in constructor
+        localStorage.setItem('expires_at', JSON.stringify(this.expiresAt));
+        if (profile) {
+            localStorage.setItem('profile', JSON.stringify(profile));
+            this.userProfile = profile;
+            this.isAdmin = this._checkAdmin(profile);
+        }
+        this.accessToken = authResult.accessToken;
+        // Update login status in loggedIn$ stream
+        this.setLoggedIn(true);
+        this.loggingIn = false;
+    };
+    AuthService.prototype._clearExpiration = function () {
+        // Remove token expiration from localStorage
+        localStorage.removeItem('expires_at');
+    };
+    AuthService.prototype._checkAdmin = function (profile) {
+        // Check if the user has admin role
+        var roles = profile[_auth_auth_config__WEBPACK_IMPORTED_MODULE_4__["AUTH_CONFIG"].NAMESPACE] || [];
+        return roles.indexOf('admin') > -1;
     };
     AuthService.prototype.logout = function () {
-        localStorage.removeItem('profile');
-        localStorage.removeItem('token');
+        // Remove data from localStorage
+        this._clearExpiration();
+        // End Auth0 authentication session
+        this._auth0.logout({
+            clientId: _auth_auth_config__WEBPACK_IMPORTED_MODULE_4__["AUTH_CONFIG"].CLIENT_ID,
+            returnTo: _core_env_config__WEBPACK_IMPORTED_MODULE_5__["ENV"].BASE_URI
+        });
     };
-    AuthService.prototype.isAuthenticated = function () {
-        return Object(angular2_jwt__WEBPACK_IMPORTED_MODULE_4__["tokenNotExpired"])();
-    };
-    AuthService.prototype.getProfile = function () {
-        if (this.userProfile) {
-            return this.userProfile;
-        }
-        else {
-            this.lock.getUserInfo(localStorage.get("accessToken"), function (error, profile) {
-                if (error) {
-                    console.log(error);
-                    return;
-                }
-                this.userProfile = profile;
-                return profile;
-            });
-        }
-    };
-    AuthService.prototype.resetPassword = function () {
-        var profile = this.getProfile();
-        var url = "https://onlinecodingjudge.auth0.com/dbconnections/change_password";
-        var headers = new _angular_http__WEBPACK_IMPORTED_MODULE_3__["Headers"]({ 'content-type': 'application/json' });
-        var body = {
-            client_id: "WmcMlWdwZz2ClNWyMH8VCo1AQCK6aPQo",
-            email: profile.email,
-            connection: 'Username-Password-Authentication'
-        };
-        var options = new _angular_http__WEBPACK_IMPORTED_MODULE_3__["RequestOptions"]({ headers: headers });
-        this.http.post(url, body, options)
-            .toPromise()
-            .then(function (res) {
-            console.log(res);
-            alert("An email was just sent to reset your password");
-        })
-            .catch(this.handleError);
-    };
-    AuthService.prototype.handleError = function (error) {
-        console.error('An error occurred', error);
-        return Promise.reject(error.message || error);
+    Object.defineProperty(AuthService.prototype, "tokenValid", {
+        get: function () {
+            // Check if current time is past access token's expiration
+            return Date.now() < JSON.parse(localStorage.getItem('expires_at'));
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AuthService.prototype.renewToken = function () {
+        var _this = this;
+        // Check for valid Auth0 session
+        this._auth0.checkSession({}, function (err, authResult) {
+            if (authResult && authResult.accessToken) {
+                _this._getProfile(authResult);
+            }
+            else {
+                _this._clearExpiration();
+            }
+        });
     };
     AuthService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
-        __metadata("design:paramtypes", [_angular_http__WEBPACK_IMPORTED_MODULE_3__["Http"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
     ], AuthService);
     return AuthService;
 }());
 
+//    private _idToken: string;
+//    private _accessToken: string;
+//   // private _expiresAt: number;
+//
+//   private profile_observer: Observer<User>;
+//   userProfileChange$: Observable<User> = new Observable(obs => this.profile_observer = obs);
+//
+//   userProfile: any;
+//
+//   auth0Options = {
+//     theme: {
+//
+//       primaryColor: '#DFA612'
+//     },
+//     auth: {
+//       redirectUrl: "http://localhost:3000/problems",
+//       responseType: 'token id_token',
+//       audience: `https://onlinecodingjudge.auth0.com/userinfo`,
+//       params: {
+//         scope: 'openid profile email roles'
+//       }
+//     },
+//     autoclose: true,
+//     oidcConformant: true,
+//   };
+//
+//   lock = new Auth0Lock('WmcMlWdwZz2ClNWyMH8VCo1AQCK6aPQo' ,'onlinecodingjudge.auth0.com', this.auth0Options);
+//
+//
+//   constructor(private http : Http,public router: Router) {
+//     this.lock.on('authenticated', (authResult: any) => {
+//       this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
+//         if (error) {
+//           throw new Error(error);
+//         }
+//
+//         localStorage.setItem('token', authResult.idToken);
+//         localStorage.setItem('profile', JSON.stringify(profile));
+//         this.userProfile = profile;
+//         this.profile_observer.next(profile);
+//         this.router.onSameUrlNavigation = 'reload';
+//         this.router.navigate(['/home']);
+//         // this.router.navigate(['/']);
+//       });
+//     });
+//
+//     this.lock.on('authorization_error', function(error) {
+//       this.lock.show({
+//         flashMessage: {
+//           type: 'error',
+//           text: error.errorDescription
+//         }
+//       });
+//     });
+//
+//
+//   }
+//
+//   public login(): Promise<Object> {
+//     return new Promise((resolve, reject) => {
+//       // Call the show method to display the widget.
+//       this.lock.show((error: string, profile: Object, id_token: string) => {
+//         if (error) {
+//           console.log(error);
+//           reject(error);
+//         } else {
+//           localStorage.setItem('profile', JSON.stringify(profile));
+//           localStorage.setItem('id_token', id_token);
+//           console.log(profile);
+//           resolve(profile);
+//         }
+//       });
+//     })
+//   }
+//
+//   logout() {
+//     localStorage.removeItem('profile');
+//     localStorage.removeItem('token');
+//   }
+//
+//   isAuthenticated() {
+//     return tokenNotExpired();
+//   }
+//
+//   getProfile() :User {
+//       if (this.userProfile) {
+//         return this.userProfile;
+//       } else {
+//         this.lock.getUserInfo(localStorage.getItem("token"), function(error, profile) {
+//           if (error) {
+//             console.log(error);
+//             return;
+//           }
+//           this.userProfile = profile;
+//           return profile;
+//         });
+//       }
+//   }
+//
+//   public resetPassword() {
+//     let profile = this.getProfile();
+//     let url : string = `https://onlinecodingjudge.auth0.com/dbconnections/change_password`;
+//     let headers = new Headers({'content-type': 'application/json'});
+//     let body = {
+//       client_id: "WmcMlWdwZz2ClNWyMH8VCo1AQCK6aPQo",
+//       email: profile.email,
+//       connection: 'Username-Password-Authentication'
+//     }
+//     const options = new RequestOptions ({headers: headers})
+//     this.http.post(url, body, options)
+//       .toPromise()
+//       .then( res => {
+//         console.log(res);
+//         alert("An email was just sent to reset your password");
+//       })
+//       .catch(this.handleError);
+//   }
+//
+//   private handleError(error : any) : Promise<any> {
+//     console.error('An error occurred', error);
+//     return Promise.reject(error.message || error);
+//   }
+//
+//   public isAdmin(profile) : boolean {
+//     const roles = profile['http://newgrad-developer.com/roles'] || [];
+//     return roles.indexOf('admin') > -1;
+//   }
+//
+//   // auth0 = new auth0.WebAuth({
+//   //   clientID: 'WmcMlWdwZz2ClNWyMH8VCo1AQCK6aPQo',
+//   //   domain: 'onlinecodingjudge.auth0.com',
+//   //   responseType: 'token id_token',
+//   //   redirectUri: 'http://localhost:3000/callback',
+//   //   scope: 'openid profile'
+//   // });
+//   //
+//   // constructor(public router: Router) {
+//   //   this._idToken = '';
+//   //   this._accessToken = '';
+//   //   this._expiresAt = 0;
+//   // }
+//   //
+//   // get accessToken(): string {
+//   //   return this._accessToken;
+//   // }
+//   //
+//   // get idToken(): string {
+//   //   return this._idToken;
+//   // }
+//   //
+//   // public login(): void {
+//   //   this.auth0.authorize();
+//   // }
+//   //
+//   // public handleAuthentication(): void {
+//   //   this.auth0.parseHash((err, authResult) => {
+//   //     if (authResult && authResult.accessToken && authResult.idToken) {
+//   //       window.location.hash = '';
+//   //       this.setSession(authResult).then( profile =>
+//   //          { this.router.navigate(['/home']); }
+//   //       );
+//   //
+//   //
+//   //     } else if (err) {
+//   //       this.router.navigate(['/home']);
+//   //       console.log(err);
+//   //     }
+//   //
+//   //   });
+//   // }
+//   //
+//   //
+//   //
+//   // private setSession(authResult): Promise<any> {
+//   //   // Set isLoggedIn flag in localStorage
+//   //   localStorage.setItem('isLoggedIn', 'true');
+//   //   // Set the time that the access token will expire at
+//   //   const expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
+//   //   this._accessToken = authResult.accessToken;
+//   //   localStorage.setItem("accessToken",authResult.accessToken);
+//   //   localStorage.setItem("expiresAt", expiresAt.toString());
+//   //   console.log(authResult.accessToken);
+//   //   this._idToken = authResult.idToken;
+//   //   this._expiresAt = expiresAt;
+//   //
+//   //   if (!localStorage.getItem("accessToken")) {
+//   //     throw new Error('Access Token must exist to fetch profile');
+//   //   }
+//   //   this.fetchProfile(localStorage.getItem("accessToken")).
+//   //         then(profile => this.userProfile = profile)
+//   //         .catch(err => console.log(err));
+//   //
+//   //   return new Promise((resolve,reject) => {
+//   //         resolve(this.userProfile);
+//   //   });
+//   // }
+//   //
+//   // public renewSession(): void {
+//   //   this.auth0.checkSession({}, (err, authResult) => {
+//   //     if (authResult && authResult.accessToken && authResult.idToken) {
+//   //       this.setSession(authResult);
+//   //     } else if (err) {
+//   //       alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
+//   //       this.logout();
+//   //     }
+//   //   });
+//   // }
+//   //
+//   // public logout(): void {
+//   //   // Remove tokens and expiry time
+//   //   this._accessToken = '';
+//   //   this._idToken = '';
+//   //   this._expiresAt = 0;
+//   //   // Remove isLoggedIn flag from localStorage
+//   //   localStorage.removeItem('isLoggedIn');
+//   //   localStorage.removeItem('accessToken');
+//   //   localStorage.removeItem('profile');
+//   //   localStorage.removeItem('expiresAt');
+//   //   // Go back to the home route
+//   //   this.router.navigate(['/']);
+//   // }
+//   //
+//   // public isAuthenticated(): boolean {
+//   //   // Check whether the current time is past the
+//   //   // access token's expiry time
+//   //   return new Date().getTime() < Date.parse( localStorage.getItem("expiresAt") );
+//   // }
+//   //
+//   // public getProfile(accessToken,cb): void {
+//   //   if (!accessToken) {
+//   //     throw new Error('Access Token must exist to fetch profile');
+//   //   }
+//   //
+//   //   const self = this;
+//   //   this.auth0.client.userInfo(this.accessToken, (err, profile) => {
+//   //     if (profile) {
+//   //       self.userProfile = profile;
+//   //
+//   //     }
+//   //     cb(err, profile);
+//   //   });
+//   // }
+//   //
+//   // public fetchProfile(accessToken:string): Promise<any> {
+//   //   return new Promise((resolve, reject) => {
+//   //
+//   //     this.getProfile(accessToken,(err, prof) => {
+//   //       if (err) {
+//   //         reject(err);
+//   //       } else {
+//   //         localStorage.setItem('profile', JSON.stringify(prof));
+//   //         resolve(prof);
+//   //       }
+//   //     });
+//   //   });
+//   // }
+// }
 
 
 /***/ }),

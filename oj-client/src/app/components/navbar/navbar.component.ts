@@ -15,9 +15,7 @@ import 'rxjs/add/operator/debounceTime';
 export class NavbarComponent implements OnInit, OnDestroy {
 
   brandName = "COJ"
-  username = ""
-  profile: User;
-  avator: string;
+
 
   searchBox: FormControl = new FormControl;
 
@@ -27,18 +25,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
               private router: Router) { }
 
   ngOnInit() {
-    if (this.auth.isAuthenticated()) {
-      if (localStorage.getItem("profile")) {
-        this.username = JSON.parse(localStorage.getItem("profile")).nickname;
-        this.avator = JSON.parse(localStorage.getItem("profile")).picture;
-      }
-    } else {
-      console.log("Loading from observable");
-      this.auth.userProfileChange$.subscribe(profile => {
-        this.username = profile.nickname;
-        this.avator = profile.picture;
-      } )
-    }
+
     this.subscription = this.searchBox
                             .valueChanges
                              .subscribe(
@@ -54,17 +41,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    this.auth.login()
-      .then(profile=> {
-        console.log(profile);
-        this.username = profile.nickname})
-      .catch(err => {console.log(err)});
+    this.auth.login();
 
   }
 
   logout(){
     this.auth.logout();
-    this.username = "";
+
   }
 
   searchProblem() {
