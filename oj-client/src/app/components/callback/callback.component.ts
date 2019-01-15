@@ -16,6 +16,7 @@ export class CallbackComponent implements OnInit {
   }
 
   ngOnInit() {
+
   }
 
 }

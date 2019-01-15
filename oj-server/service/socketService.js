@@ -1,4 +1,8 @@
+let redisClient = require('../modules/redisClient');
+const TIMEOUT_IN_SECONDS = 3600;
 module.exports = function(io) {
+
+    let redisClient = require('../modules/redisClient');
 
     var collaboration = [];
     var socketIdtoSessionId = [];
@@ -23,27 +27,31 @@ module.exports = function(io) {
 
     }
     //
-
-
     io.on('connection', (socket) => {
-        console.log("Handshake query: " + socket.handshake.query);
+        //console.log("Handshake query: " + socket.handshake.query);
         let sessionId = socket.handshake.query["sessionId"];
         socketIdtoSessionId[socket.id] = sessionId;
-        console.log("SocketId " + socket.id + " connected from sessionId " + sessionId);
+        // console.log("SocketId " + socket.id + " connected from sessionId " + sessionId);
         if (sessionId in collaboration) {
             collaboration[sessionId]['participants'].push(socket.id);
-            let changeEvents = collaboration[sessionId]['cachedChangeEvents'];
-            for (let i=0; i < changeEvents.length; i++) {
-                socket.emit(changeEvents[i][0], changeEvents[i][1]);
-            }
-
-
         }
         else {
-            collaboration[sessionId] = {
-                'cachedChangeEvents': [],
-                'participants': []
-            };
+            redisClient.get(sessionPath + sessionId, function(data) {
+                if(data) {
+                    //console.log("session terminated previously; pulling back from Redis.");
+                    collaboration[sessionId] = {
+                        'cachedChangeEvents': JSON.parse(data),
+                        'participants': []
+                    };
+                } else {
+                    console.log("creating new session");
+                    collaboration[sessionId] = {
+                        'cachedChangeEvents': [],
+                        'participants': []
+                    };
+                }
+                collaboration[sessionId]['participants'].push(socket.id);
+            });
         }
         io.to(socket.id).emit('message', 'Connected on server');
 
@@ -56,6 +64,15 @@ module.exports = function(io) {
             }
             forwardEvents(socket.id, "change", delta);
         });
+
+        socket.on('cursorMove', cursor => {
+
+            cursor = JSON.parse(cursor);
+            cursor['socketId'] = socket.id;
+
+            forwardEvents(socket.id, 'cursorMove', JSON.stringify(cursor));
+        })
+
         socket.on('disconnect', function(){
             console.log("Disconnecting from " + socket.id);
             let sessionId = socketIdtoSessionId[socket.id];
@@ -64,11 +81,27 @@ module.exports = function(io) {
                 let index = participants.indexOf(participants);
                 if (index >= 0) {
                     participants.splice(index, 1);
+                    if (participants.length == 0) {
+                        let key = sessionPath + sessionId;
+                        let value = collaboration[sessionId]['cachedChangeEvents'];
+                        redisClient.set(key, value, redisPrint);
+                        redisClient.expire(key, TIMEOUT_IN_SECONDS);
+                        delete collaboration[sessionId];
+                    }
+                }
+
+            }
+        });
+        socket.on('restoreBuffer',function() {
+            let sessionId = socketIdtoSessionId[socket.id];
+            if (sessionId in collaboration) {
+                let cachedEvents = collaboration[sessionId]['cachedChangeEvents'];
+                for (let i =0 ; i < cachedEvents.length; i ++) {
+                    socket.emit(cachedEvents[i][0], cachedEvents[i][1]);
                 }
             }
-
-
         });
+
 
 
     })

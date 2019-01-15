@@ -77,13 +77,21 @@ export class EditorComponent implements OnInit {
 
     this.collabration.init(this.editor, this.sessionId);
     this.editor.lastAppliedChange = null;
-
+    // On the event of content change
     this.editor.on('change',e => {
         console.log('editor changes ' + JSON.stringify(e));
         if (this.editor.lastAppliedChange != e) {
           this.collabration.change(JSON.stringify(e));
         }
     })
+    // On the event of cursor movement
+    this.editor.getSession().getSelection().on("changeCursor", () => {
+      let cursor = this.editor.getSession().getSelection().getCursor();
+      console.log('cursor moves: ' + JSON.stringify(cursor));
+      this.collabration.cursorMove(JSON.stringify(cursor));
+    });
+
+    this.collabration.restoreBuffer();
   }
 
   resetEditor(): void {
