@@ -1,4 +1,5 @@
 let redisClient = require('../modules/redisClient');
+
 const TIMEOUT_IN_SECONDS = 3600;
 module.exports = function(io) {
 
@@ -36,6 +37,7 @@ module.exports = function(io) {
             collaboration[sessionId]['participants'].push(socket.id);
         }
         else {
+            console.log("Getting redis: ", sessionPath + sessionId);
             redisClient.get(sessionPath + sessionId, function(data) {
                 if(data) {
                     //console.log("session terminated previously; pulling back from Redis.");
@@ -74,17 +76,18 @@ module.exports = function(io) {
         })
 
         socket.on('disconnect', function(){
-            console.log("Disconnecting from " + socket.id);
+            //console.log("Disconnecting from " + socket.id);
             let sessionId = socketIdtoSessionId[socket.id];
             if (sessionId in collaboration) {
                 let participants = collaboration[sessionId].participants;
-                let index = participants.indexOf(participants);
+                let index = participants.indexOf(socket.id);
+                console.log("Index of disconnecting user: " + index);
                 if (index >= 0) {
                     participants.splice(index, 1);
                     if (participants.length == 0) {
                         let key = sessionPath + sessionId;
-                        let value = collaboration[sessionId]['cachedChangeEvents'];
-                        redisClient.set(key, value, redisPrint);
+                        let value = JSON.stringify( collaboration[sessionId]['cachedChangeEvents'] );
+                        redisClient.set(key, value, redisClient.redisPrint);
                         redisClient.expire(key, TIMEOUT_IN_SECONDS);
                         delete collaboration[sessionId];
                     }
